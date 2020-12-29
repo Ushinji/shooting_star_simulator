@@ -29,20 +29,25 @@ export default defineComponent({
 }
 
 .start {
-  background-color: snow;
-  height: 16px;
-  width: 16px;
+  background: linear-gradient(rgb(133, 133, 133), snow);
+  height: 4px;
+  width: 4px;
   position: fixed;
-  border-radius: 50%;
+  border-radius: 25%;
   top: 10%;
-  animation: anim 1s linear infinite;
+  animation: anim 0.2s linear forwards;
 }
 
 @keyframes anim {
+  0% {
+    opacity: 100%;
+  }
+
   100% {
     color: transparent;
-    top: 50%;
+    top: 20%;
     height: 100px;
+    opacity: 0;
   }
 }
 </style>
