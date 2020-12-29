@@ -1,18 +1,23 @@
 <template>
   <div class="container">
     <div>
-      <h1 class="title">shooting_star_simulator</h1>
-      <div class="start" />
+      <h1 class="title">Shooting Star Simulator</h1>
+      <button @click="onClick">Start</button>
+      <div v-if="active" class="start" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, ref } from '@vue/composition-api';
 
 export default defineComponent({
   setup() {
-    return {};
+    const active = ref(false);
+    const onClick = () => {
+      active.value = !active.value;
+    };
+    return { active, onClick };
   },
 });
 </script>
@@ -26,28 +31,42 @@ export default defineComponent({
   align-items: center;
   text-align: center;
   background-color: black;
+  color: white;
 }
 
 .start {
-  background: linear-gradient(rgb(133, 133, 133), snow);
-  height: 4px;
-  width: 4px;
+  background: linear-gradient(transparent, rgb(255, 255, 255));
+  height: 2px;
+  width: 2px;
   position: fixed;
   border-radius: 25%;
   top: 10%;
-  animation: anim 0.2s linear forwards;
+  animation: anim 0.8s linear forwards;
 }
 
 @keyframes anim {
   0% {
+    opacity: 50%;
+    height: 2px;
+  }
+
+  50% {
+    height: 80px;
     opacity: 100%;
+    filter: blur(1px);
+  }
+
+  75% {
+    height: 90px;
+    opacity: 50%;
+    filter: blur(1px);
   }
 
   100% {
     color: transparent;
-    top: 20%;
     height: 100px;
-    opacity: 0;
+    opacity: 0%;
+    filter: blur(1px);
   }
 }
 </style>
