@@ -38,6 +38,7 @@ export default Vue.extend({})
   100% {
     color: transparent;
     top: 50%;
+    height: 100px;
   }
 }
 </style>
