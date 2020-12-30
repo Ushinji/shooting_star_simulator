@@ -1,11 +1,13 @@
 <template>
   <div class="container">
-    <div>
-      <h1 class="title">Shooting Star Simulator</h1>
-      <button @click="onClick">Start</button>
-      <div v-if="active" class="start-position">
+    <div class="header"><h1 class="title">Shooting Star Simulator</h1></div>
+    <div class="body">
+      <div v-show="active" ref="startPostionRef" class="start-position">
         <div class="start" />
       </div>
+    </div>
+    <div class="footer">
+      <button @click="onClick">Start</button>
     </div>
   </div>
 </template>
@@ -34,6 +36,27 @@ export default defineComponent({
   text-align: center;
   background-color: black;
   color: white;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  height: 40px;
+  padding: 8px 0;
+}
+
+.title {
+  font-size: 1.6rem;
+}
+
+.body {
+  height: calc(100vh - 80px);
+}
+
+.footer {
+  position: fixed;
+  bottom: 40px;
+  height: 40px;
 }
 
 .start-position {
