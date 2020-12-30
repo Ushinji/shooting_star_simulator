@@ -1,11 +1,7 @@
 <template>
   <div class="container">
     <div class="header"><h1 class="title">Shooting Star Simulator</h1></div>
-    <div class="body">
-      <div v-show="active" ref="startPostionRef" class="start-position">
-        <div class="start" />
-      </div>
-    </div>
+    <div ref="bodyRef" class="body" />
   </div>
 </template>
 
@@ -23,32 +19,47 @@ const getRadomNumber = (min: number, max: number) => {
 
 export default defineComponent({
   setup() {
-    const startPostionRef = ref<HTMLDivElement>();
+    const bodyRef = ref<HTMLDivElement>();
     const active = ref(false);
     const topAdjustor = 200;
     let intervalId: NodeJS.Timeout | null = null;
+    let starId = 0;
+
+    const getStarId = () => {
+      const result = starId;
+      starId += 1;
+      return result;
+    };
 
     onMounted(() => {
       intervalId = setInterval(() => {
-        const element = startPostionRef.value;
-        if (!element) return;
+        const bodyElement = bodyRef.value;
+        if (!bodyElement) return;
 
-        const degree = getRadomNumber(-45, 45);
+        const targetId = `star-${getStarId()}`;
+
+        const element = document.createElement('div');
+        element.id = targetId;
+        element.className = 'star-position';
+        element.innerHTML = '<div class="star" />';
+
+        const degree = getRadomNumber(-90, 90);
         element.style.transform = `rotateZ(${degree}deg)`;
 
         const radius = getRadomNumber(150, 300);
         const radian = degree * (Math.PI / 180);
         const vertical = radius * Math.cos(radian);
         const horizonal = radius * Math.sin(radian);
-
         const center = window.innerWidth / 2;
         element.style.left = `${center - horizonal}px`;
         element.style.top = `${vertical + topAdjustor}px`;
 
-        active.value = true;
-
+        bodyElement.appendChild(element);
         setTimeout(() => {
-          active.value = false;
+          const target = document.getElementById(targetId);
+          if (target) {
+            target.remove();
+          }
         }, 1000);
       }, 3000);
     });
@@ -57,7 +68,7 @@ export default defineComponent({
       if (intervalId) clearInterval(intervalId);
     });
 
-    return { active, startPostionRef };
+    return { active, bodyRef };
   },
 });
 </script>
@@ -92,11 +103,11 @@ export default defineComponent({
   width: 100vw;
 }
 
-.start-position {
+.star-position {
   position: absolute;
 }
 
-.start {
+.star {
   background: linear-gradient(transparent, rgb(255, 255, 255));
   height: 2px;
   width: 2px;
