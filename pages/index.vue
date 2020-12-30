@@ -46,7 +46,6 @@ export default defineComponent({
   width: 2px;
   position: fixed;
   border-radius: 25%;
-  top: 10%;
   animation: anim 0.8s linear forwards;
 }
 
@@ -57,13 +56,13 @@ export default defineComponent({
   }
 
   50% {
-    height: 80px;
+    height: 90px;
     opacity: 100%;
     filter: blur(1px);
   }
 
   75% {
-    height: 90px;
+    height: 95px;
     opacity: 50%;
     filter: blur(1px);
   }
