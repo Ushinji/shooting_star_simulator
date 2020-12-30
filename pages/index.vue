@@ -2,6 +2,16 @@
   <div class="container">
     <div class="header"><h1 class="title">Shooting Star Simulator</h1></div>
     <div ref="bodyRef" class="body" />
+    <div class="footer">
+      <select v-model="intervalSec">
+        <option value="5">5秒に1個</option>
+        <option value="3">3秒に1個</option>
+        <option value="1">1秒に1個</option>
+        <option value="0.5">0.5秒に1個</option>
+        <option value="0.1">0.1秒に1個</option>
+        <option value="0.01">0.01秒に1個</option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -11,6 +21,7 @@ import {
   ref,
   onMounted,
   onUnmounted,
+  watch,
 } from '@vue/composition-api';
 
 const getRadomNumber = (min: number, max: number) => {
@@ -20,8 +31,8 @@ const getRadomNumber = (min: number, max: number) => {
 export default defineComponent({
   setup() {
     const bodyRef = ref<HTMLDivElement>();
-    const active = ref(false);
-    const topAdjustor = 200;
+    const intervalSec = ref(5);
+    const topAdjustor = 300;
     let intervalId: NodeJS.Timeout | null = null;
     let starId = 0;
 
@@ -48,11 +59,11 @@ export default defineComponent({
       element.style.transform = `rotateZ(${degree}deg)`;
 
       // 表示位置の計算。中心から放射状に流れるように、位置は角度を元に計算する
-      const radius = getRadomNumber(150, 300);
+      const radius = getRadomNumber(100, document.body.clientWidth / 2);
       const radian = degree * (Math.PI / 180);
       const vertical = radius * Math.cos(radian);
       const horizonal = radius * Math.sin(radian);
-      const center = window.innerWidth / 2;
+      const center = document.body.clientWidth / 2;
       element.style.left = `${center - horizonal}px`;
       element.style.top = `${vertical + topAdjustor}px`;
 
@@ -69,14 +80,22 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      intervalId = setInterval(addShootingStar, 3000);
+      intervalId = setInterval(addShootingStar, intervalSec.value * 1000);
     });
+
+    watch(
+      () => intervalSec.value,
+      () => {
+        if (intervalId) clearInterval(intervalId);
+        intervalId = setInterval(addShootingStar, intervalSec.value * 1000);
+      }
+    );
 
     onUnmounted(() => {
       if (intervalId) clearInterval(intervalId);
     });
 
-    return { active, bodyRef };
+    return { intervalSec, bodyRef };
   },
 });
 </script>
@@ -109,6 +128,13 @@ export default defineComponent({
 .body {
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
+}
+
+.footer {
+  position: fixed;
+  bottom: 40px;
+  left: 0;
 }
 
 .star-position {
