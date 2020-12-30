@@ -3,7 +3,9 @@
     <div>
       <h1 class="title">Shooting Star Simulator</h1>
       <button @click="onClick">Start</button>
-      <div v-if="active" class="start" />
+      <div v-if="active" class="start-position">
+        <div class="start" />
+      </div>
     </div>
   </div>
 </template>
@@ -32,6 +34,10 @@ export default defineComponent({
   text-align: center;
   background-color: black;
   color: white;
+}
+
+.start-position {
+  transform: rotateZ(45deg);
 }
 
 .start {
