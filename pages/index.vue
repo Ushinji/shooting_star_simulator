@@ -31,37 +31,45 @@ export default defineComponent({
       return result;
     };
 
+    const addShootingStar = () => {
+      const bodyElement = bodyRef.value;
+      if (!bodyElement) return;
+
+      const targetId = `star-${getStarId()}`;
+
+      // 追加するElementを作成
+      const element = document.createElement('div');
+      element.id = targetId;
+      element.className = 'star-position';
+      element.innerHTML = '<div class="star" />';
+
+      // 角度を計算
+      const degree = getRadomNumber(-90, 90);
+      element.style.transform = `rotateZ(${degree}deg)`;
+
+      // 表示位置の計算。中心から放射状に流れるように、位置は角度を元に計算する
+      const radius = getRadomNumber(150, 300);
+      const radian = degree * (Math.PI / 180);
+      const vertical = radius * Math.cos(radian);
+      const horizonal = radius * Math.sin(radian);
+      const center = window.innerWidth / 2;
+      element.style.left = `${center - horizonal}px`;
+      element.style.top = `${vertical + topAdjustor}px`;
+
+      // Elementを追加
+      bodyElement.appendChild(element);
+
+      // １秒後に追加したElementを削除する
+      setTimeout(() => {
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.remove();
+        }
+      }, 1000);
+    };
+
     onMounted(() => {
-      intervalId = setInterval(() => {
-        const bodyElement = bodyRef.value;
-        if (!bodyElement) return;
-
-        const targetId = `star-${getStarId()}`;
-
-        const element = document.createElement('div');
-        element.id = targetId;
-        element.className = 'star-position';
-        element.innerHTML = '<div class="star" />';
-
-        const degree = getRadomNumber(-90, 90);
-        element.style.transform = `rotateZ(${degree}deg)`;
-
-        const radius = getRadomNumber(150, 300);
-        const radian = degree * (Math.PI / 180);
-        const vertical = radius * Math.cos(radian);
-        const horizonal = radius * Math.sin(radian);
-        const center = window.innerWidth / 2;
-        element.style.left = `${center - horizonal}px`;
-        element.style.top = `${vertical + topAdjustor}px`;
-
-        bodyElement.appendChild(element);
-        setTimeout(() => {
-          const target = document.getElementById(targetId);
-          if (target) {
-            target.remove();
-          }
-        }, 1000);
-      }, 3000);
+      intervalId = setInterval(addShootingStar, 3000);
     });
 
     onUnmounted(() => {
