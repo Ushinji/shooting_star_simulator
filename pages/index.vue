@@ -17,6 +17,10 @@ import {
   onUnmounted,
 } from '@vue/composition-api';
 
+const getRadomNumber = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max + 1 - min)) + min;
+};
+
 export default defineComponent({
   setup() {
     const startPostionRef = ref<HTMLDivElement>();
@@ -27,12 +31,13 @@ export default defineComponent({
       intervalId = setInterval(() => {
         const element = startPostionRef.value;
         if (!element) return;
-        element.style.transform = 'rotateZ(30deg)';
+        const degree = getRadomNumber(-45, 45);
+        element.style.transform = `rotateZ(${degree}deg)`;
         active.value = true;
         setTimeout(() => {
           active.value = false;
         }, 1000);
-      }, 3000);
+      }, 2000);
     });
 
     onUnmounted(() => {
@@ -72,6 +77,7 @@ export default defineComponent({
 }
 
 .start-position {
+  margin-top: 60px;
   transform: rotateZ(45deg);
 }
 
