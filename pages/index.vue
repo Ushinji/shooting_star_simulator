@@ -6,22 +6,40 @@
         <div class="start" />
       </div>
     </div>
-    <div class="footer">
-      <button @click="onClick">Start</button>
-    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api';
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  onUnmounted,
+} from '@vue/composition-api';
 
 export default defineComponent({
   setup() {
+    const startPostionRef = ref<HTMLDivElement>();
     const active = ref(false);
-    const onClick = () => {
-      active.value = !active.value;
-    };
-    return { active, onClick };
+    let intervalId: NodeJS.Timeout | null = null;
+
+    onMounted(() => {
+      intervalId = setInterval(() => {
+        const element = startPostionRef.value;
+        if (!element) return;
+        element.style.transform = 'rotateZ(30deg)';
+        active.value = true;
+        setTimeout(() => {
+          active.value = false;
+        }, 1000);
+      }, 3000);
+    });
+
+    onUnmounted(() => {
+      if (intervalId) clearInterval(intervalId);
+    });
+
+    return { active, startPostionRef };
   },
 });
 </script>
@@ -50,13 +68,7 @@ export default defineComponent({
 }
 
 .body {
-  height: calc(100vh - 80px);
-}
-
-.footer {
-  position: fixed;
-  bottom: 40px;
-  height: 40px;
+  height: calc(100vh - 40px);
 }
 
 .start-position {
