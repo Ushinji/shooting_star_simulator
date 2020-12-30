@@ -25,19 +25,32 @@ export default defineComponent({
   setup() {
     const startPostionRef = ref<HTMLDivElement>();
     const active = ref(false);
+    const topAdjustor = 200;
     let intervalId: NodeJS.Timeout | null = null;
 
     onMounted(() => {
       intervalId = setInterval(() => {
         const element = startPostionRef.value;
         if (!element) return;
+
         const degree = getRadomNumber(-45, 45);
         element.style.transform = `rotateZ(${degree}deg)`;
+
+        const radius = getRadomNumber(150, 300);
+        const radian = degree * (Math.PI / 180);
+        const vertical = radius * Math.cos(radian);
+        const horizonal = radius * Math.sin(radian);
+
+        const center = window.innerWidth / 2;
+        element.style.left = `${center - horizonal}px`;
+        element.style.top = `${vertical + topAdjustor}px`;
+
         active.value = true;
+
         setTimeout(() => {
           active.value = false;
         }, 1000);
-      }, 2000);
+      }, 3000);
     });
 
     onUnmounted(() => {
@@ -64,8 +77,10 @@ export default defineComponent({
 .header {
   position: fixed;
   top: 0;
-  height: 40px;
-  padding: 8px 0;
+  left: 0;
+  width: 100vw;
+  height: 64px;
+  padding: 16px 0;
 }
 
 .title {
@@ -73,12 +88,12 @@ export default defineComponent({
 }
 
 .body {
-  height: calc(100vh - 40px);
+  height: 100vh;
+  width: 100vw;
 }
 
 .start-position {
-  margin-top: 60px;
-  transform: rotateZ(45deg);
+  position: absolute;
 }
 
 .start {
@@ -105,7 +120,6 @@ export default defineComponent({
   75% {
     height: 95px;
     opacity: 50%;
-    filter: blur(1px);
   }
 
   100% {
