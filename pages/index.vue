@@ -4,12 +4,9 @@
     <div ref="bodyRef" class="body" />
     <div class="footer">
       <select v-model="intervalSec">
-        <option value="5">5秒に1個</option>
         <option value="3">3秒に1個</option>
         <option value="1">1秒に1個</option>
         <option value="0.5">0.5秒に1個</option>
-        <option value="0.1">0.1秒に1個</option>
-        <option value="0.01">0.01秒に1個</option>
       </select>
     </div>
   </div>
