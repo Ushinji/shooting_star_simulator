@@ -3,11 +3,14 @@
     <div class="header"><h1 class="title">Shooting Star Simulator</h1></div>
     <div ref="bodyRef" class="body" />
     <div class="footer">
-      <select v-model="intervalSec">
-        <option value="3">3秒に1個</option>
-        <option value="1">1秒に1個</option>
-        <option value="0.5">0.5秒に1個</option>
-      </select>
+      <div class="select">
+        <label for="intervalSec">流れ星の頻度</label>
+        <select id="intervalSec" v-model="intervalSec">
+          <option value="3">3秒に1個</option>
+          <option value="1">1秒に1個</option>
+          <option value="0.5">0.5秒に1個</option>
+        </select>
+      </div>
     </div>
   </div>
 </template>
@@ -28,7 +31,7 @@ const getRadomNumber = (min: number, max: number) => {
 export default defineComponent({
   setup() {
     const bodyRef = ref<HTMLDivElement>();
-    const intervalSec = ref(5);
+    const intervalSec = ref(3);
     const topAdjustor = 300;
     let intervalId: NodeJS.Timeout | null = null;
     let starId = 0;
@@ -132,6 +135,48 @@ export default defineComponent({
   position: fixed;
   bottom: 40px;
   left: 0;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+}
+
+.select {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  select {
+    color: white;
+    font-size: 1rem;
+    padding: 6px 24px 5px 8px;
+    background-color: #383838;
+    border: 1px solid #6b6b6b;
+    border-radius: 4px;
+    -webkit-appearance: none;
+    margin-bottom: 2px;
+    cursor: pointer;
+    outline: 0;
+
+    &:hover {
+      background-color: darken(#383838, 5%);
+    }
+
+    &:focus {
+      outline: none;
+      border: solid 1px #2783b9;
+      border-radius: 4px;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
 }
 
 .star-position {
