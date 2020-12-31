@@ -144,6 +144,7 @@ export default defineComponent({
   padding: 16px;
   display: flex;
   flex-direction: column;
+  position: relative;
 
   label {
     color: white;
@@ -176,6 +177,26 @@ export default defineComponent({
     &:disabled {
       cursor: not-allowed;
     }
+  }
+
+  &::after {
+    border: 3px solid transparent;
+    border-radius: 2px;
+    border-right: 0;
+    border-top: 0;
+    content: ' ';
+    display: block;
+    height: 0.625em;
+    width: 0.625em;
+    margin-top: -0.4375em;
+    pointer-events: none;
+    position: absolute;
+    top: 62%;
+    transform: rotate(-45deg);
+    transform-origin: center;
+    border-color: #afafaf;
+    right: 1.6em;
+    z-index: 4;
   }
 }
 
