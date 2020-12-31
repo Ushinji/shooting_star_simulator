@@ -59,7 +59,7 @@ export default defineComponent({
       element.style.transform = `rotateZ(${degree}deg)`;
 
       // 表示位置の計算。中心から放射状に流れるように、位置は角度を元に計算する
-      const radius = getRadomNumber(100, document.body.clientWidth / 2);
+      const radius = getRadomNumber(10, document.body.clientWidth / 6);
       const radian = degree * (Math.PI / 180);
       const vertical = radius * Math.cos(radian);
       const horizonal = radius * Math.sin(radian);
